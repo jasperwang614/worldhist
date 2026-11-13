@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build mod zip
+        run: |
+          mkdir -p worldhist
+          cp -r items localization assets main.lua worldhist.json README.md CHANGELOG.md .gitignore worldhist/
+          zip -r "worldhist-${GITHUB_REF_NAME}.zip" worldhist
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: "worldhist-*.zip"
+          body: |
+            # 世界历史 WORLD HISTORY
+
+            v0.1.0：49 张小丑 + 26 张消耗牌 + 18 张优惠券 + 6 个 Boss 盲注 + 2 个标签 + 20 个开局时局。全卡中英双语。
+
+            ## 三条主线
+            - **登基**：五组形态对（嬴政→秦始皇、路易·奥古斯特→路易十六、弘历→乾隆、波拿巴→拿破仑一世、尤利乌斯→凯撒），五个登基来源，拿破仑可点击自我加冕
+            - **吞并**：秦始皇登基吞全场小丑为壳，按手牌顺序代发壳的效果，每吞 1 个 +25 筹码
+            - **革命**：断头台还原皇帝 + 返还登机器物；路易十六例外产出「头」，在罗伯斯庇尔 Boss 战中出售即终结该 Blind；布鲁图第 15 张计分牌刺杀凯撒
+
+            ## 其它
+            - 政策线 18 张优惠券（郡县制、科举制、大宪章、梭伦改革、九十五条论纲、东印度公司、石人一只眼……），大量负面条款
+            - 星图线 9 张星球牌：牌型等级 = 认知层级
+            - Boss 盲注：恐怖统治·罗伯斯庇尔、朕即国家·路易十四、大运河·隋炀帝、弭谤·周厉王、黑死病、结绳记事·印加
+            - 时局系统：开局 20 个池抽 3 选 1，每个都是「一条构筑方向 + 一条代价」
+
+            ## 安装
+            依赖 Lovely + Steamodded (SMODS) 1.0+，解压 `worldhist` 文件夹到 `%APPDATA%/Balatro/Mods/`。
+
+            ## 已知事项
+            - 101 件内容全部已实现并通过静态检查；实测仅时局系统跑通完整链路，其余待整局实测
+            - 美术 12%（12 张已接自定义图集），其余为原版图集帧占位，欢迎投稿
+            - 部分数值为草案，整局平衡待后续版本

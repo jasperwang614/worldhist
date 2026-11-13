@@ -1,0 +1,5 @@
+# 备份与日志
+*.bak
+*.log
+Thumbs.db
+.DS_Store

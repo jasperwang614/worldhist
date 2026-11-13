@@ -1,0 +1,16 @@
+{
+    "id": "worldhist",
+    "name": "World History",
+    "display_name": "世界历史 WORLD HISTORY",
+    "author": ["jasperwang614"],
+    "description": "把世界历史人物、器物、制度与事件做进小丑牌。Emperors, relics, policies and revolutions in Balatro.",
+    "prefix": "hist",
+    "main_file": "main.lua",
+    "version": "0.1.0",
+    "priority": 0,
+    "badge_colour": "5c3a21",
+    "badge_text_colour": "F5E6C8",
+    "dependencies": ["Steamodded (>=1.0.0~BETA-1501a)"],
+    "conflicts": [],
+    "provides": []
+}

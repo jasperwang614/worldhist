@@ -17,7 +17,7 @@ jobs:
       - name: Build mod zip
         run: |
           mkdir -p worldhist
-          cp -r items localization assets main.lua worldhist.json README.md CHANGELOG.md .gitignore worldhist/
+          cp -r items localization assets main.lua worldhist.json README.md README.en.md CHANGELOG.md .gitignore worldhist/
           zip -r "worldhist-${GITHUB_REF_NAME}.zip" worldhist
 
       - name: Create GitHub Release

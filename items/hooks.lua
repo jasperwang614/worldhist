@@ -55,6 +55,29 @@ function G.FUNCS.get_poker_hand_info(cards, ...)
 	return a, b, c, d, e
 end
 
+-- Splash（原版小丑「水花」）会绕开上面的花色过滤。
+-- 原版 evaluate_play 拿到 scoring_hand 之后还有一段（state_events.lua）：
+--     if next(find_joker('Splash')) then scoring_hand[i] = G.play.cards[i] end
+-- 也就是只要场上有 Splash，打出的每一张牌都会重新进入计分表，
+-- 锁花色的代价当场归零（还白拿红桃 +4 / 黑桃 +50）。
+-- find_joker 是全局函数（functions/misc_functions.lua），返回小丑表，调用方用 next() 判空；
+-- 锁花色时让它返回空表，Splash 就"不存在"了。
+-- ★ 不用包装 evaluate_play：smods 的 Blind:debuff_hand（overrides.lua:2584）也调 find_joker('Splash')
+--   来算 Boss 的废牌型范围，包这一层两条路径同时生效，口径一致。
+-- ★ 石头牌另说：它没有花色（原版把纯筹码牌视作不依赖花色），锁花色时仍按原版逻辑计分，
+--   但拿不到 +50/+4 的花色加成（下面 get_chip_bonus / get_chip_mult 有花色判定）。
+-- ★ 幂等标记：mod 重载时 hooks.lua 会再执行一遍，没有标记就会把包装套在自己身上，无限递归。
+if not _G.HIST_FIND_JOKER_WRAPPED and type(find_joker) == "function" then
+	_G.HIST_FIND_JOKER_WRAPPED = true
+	local find_joker_ref = find_joker
+	function find_joker(name, ...)
+		if name == "Splash" and HIST.omen_lock_suit() then
+			return {}
+		end
+		return find_joker_ref(name, ...)
+	end
+end
+
 -- 察举制：所有牌型升级效果翻倍。level_up_hand 是全局函数（common_events.lua），
 -- 包在这里后，星球牌 / 券 / 小丑等所有升级来源都多升 1 级。
 local level_up_hand_ref = level_up_hand

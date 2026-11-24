@@ -1,5 +1,6 @@
 -- items/emperors.lua — 皇帝线（对应设计案 §三/开发规范 §5.3）
--- 美术：嬴政 (0,0) / 秦始皇 (1,0) 已接 hist_jokers 图集（assets/1x|2x/jokers.png）。
+-- 美术：已接 hist_jokers 图集（assets/1x|2x/jokers.png）——
+--   嬴政 (0,0) / 秦始皇 (1,0) / 路易·奥古斯特 (2,0) / 路易十六 (3,0) / 路易十六的头 (4,0) / 凯撒 (5,0)
 -- 其余形态尚未出图，不写 atlas、pos 仍指原版 Joker 图集帧占位。
 
 return {
@@ -165,7 +166,8 @@ return {
 			config = { extra = { chips = 30 } },
 			rarity = 2,
 			cost = 6,
-			pos = { x = 5, y = 0 },
+			atlas = "hist_jokers",
+			pos = { x = 7, y = 0 },
 			blueprint_compat = false,
 			eternal_compat = true,
 			perishable_compat = true,
@@ -206,7 +208,8 @@ return {
 			config = { extra = { yubi_chips = 50 } },
 			rarity = 3,
 			cost = 8,
-			pos = { x = 6, y = 0 },
+			atlas = "hist_jokers",
+			pos = { x = 8, y = 0 },
 			blueprint_compat = true,
 			eternal_compat = true,
 			perishable_compat = true,
@@ -244,7 +247,8 @@ return {
 			config = { extra = { chips = 40 } },
 			rarity = 2,
 			cost = 6,
-			pos = { x = 7, y = 0 },
+			atlas = "hist_jokers",
+			pos = { x = 9, y = 0 },
 			blueprint_compat = true,
 			eternal_compat = true,
 			perishable_compat = true,
@@ -269,7 +273,8 @@ return {
 			config = { extra = { mult_gain = 12, mult = 0 } },
 			rarity = 3,
 			cost = 8,
-			pos = { x = 8, y = 0 },
+			atlas = "hist_jokers",
+			pos = { x = 0, y = 1 },
 			blueprint_compat = true,
 			eternal_compat = true,
 			perishable_compat = true,
@@ -299,7 +304,8 @@ return {
 			config = { extra = { mult = 4 } },
 			rarity = 2,
 			cost = 6,
-			pos = { x = 9, y = 0 },
+			atlas = "hist_jokers",
+			pos = { x = 6, y = 0 },
 			blueprint_compat = true,
 			eternal_compat = true,
 			perishable_compat = true,
@@ -318,10 +324,11 @@ return {
 		-- 配套布鲁图：同场时每局第 15 张计分牌触发刺杀
 		SMODS.Joker({
 			key = "caesar",
+			atlas = "hist_jokers",
 			config = { extra = { xmult = 3 } },
 			rarity = 3,
 			cost = 8,
-			pos = { x = 0, y = 4 },
+			pos = { x = 5, y = 0 },
 			blueprint_compat = true,
 			eternal_compat = true,
 			perishable_compat = true,
@@ -344,7 +351,8 @@ return {
 			config = { extra = { dollars = 2 } },
 			rarity = 2,
 			cost = 6,
-			pos = { x = 1, y = 4 },
+			atlas = "hist_jokers",
+			pos = { x = 1, y = 1 },
 			blueprint_compat = false,
 			eternal_compat = true,
 			perishable_compat = true,
@@ -365,7 +373,8 @@ return {
 			config = { extra = { dollars_per = 2 } },
 			rarity = 3,
 			cost = 8,
-			pos = { x = 2, y = 4 },
+			atlas = "hist_jokers",
+			pos = { x = 2, y = 1 },
 			blueprint_compat = false,
 			eternal_compat = true,
 			perishable_compat = true,

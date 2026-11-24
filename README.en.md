@@ -13,8 +13,9 @@ Three interlocking systems — **coronation**, **annexation** and **revolution**
 ## Installation
 
 1. Install [Steamodded (SMODS)](https://github.com/Steamodded/smods) and [Lovely](https://github.com/ethangreen-dev/lovely-injector). Requires Lovely + SMODS 1.0+; Talisman is not needed.
-2. Drop this folder into `%APPDATA%/Balatro/Mods/`.
-3. Launch the game — **World History** should appear in the MODS menu.
+2. Download the latest `worldhist-vX.Y.Z.zip` from [Releases](https://github.com/jasperwang614/worldhist/releases) and unzip it to get the `worldhist` folder.
+3. Drop that folder into `%APPDATA%/Balatro/Mods/` (cloning the repo there works too).
+4. Launch the game — **World History** should appear in the MODS menu.
 
 ## The Three Systems
 

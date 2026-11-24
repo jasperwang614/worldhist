@@ -13,8 +13,9 @@
 ## 安装
 
 1. 安装 [Steamodded (SMODS)](https://github.com/Steamodded/smods) 与 [Lovely](https://github.com/ethangreen-dev/lovely-injector)（依赖 Lovely + SMODS 1.0+，无需 Talisman）。
-2. 将本文件夹放入 `%APPDATA%/Balatro/Mods/`。
-3. 启动游戏，MODS 菜单应能看到 World History。
+2. 从 [Releases](https://github.com/jasperwang614/worldhist/releases) 下载最新的 `worldhist-vX.Y.Z.zip`，解压得到 `worldhist` 文件夹。
+3. 把该文件夹放入 `%APPDATA%/Balatro/Mods/`（也可以直接把仓库克隆进去）。
+4. 启动游戏，MODS 菜单应能看到 World History。
 
 ## 三条主线
 

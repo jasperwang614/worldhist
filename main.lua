@@ -121,7 +121,7 @@ end
 
 -- 器物：断头台有中文版与法文版两张，故按语言选图集文件。
 -- 注：Atlas 在 mod 加载时注册一次，游戏中切语言需重启才生效（与角标同理）。
--- x=0 传国玉玺 / x=1 天子剑 / x=2 断头台
+-- 格位：0 传国玉玺 / 1 天子剑 / 2 断头台 / 3 桂冠 / 4 圣火令 / 5 涂油礼 / 6 和氏璧 / 7 王冠 ... 17-25 星图
 SMODS.Atlas({
 	key = "hist_relics",
 	path = hist_lang_zh() and "relics.png" or "relics_en.png",
@@ -130,6 +130,8 @@ SMODS.Atlas({
 })
 -- 政策（优惠券）：x=0 石人一只眼
 SMODS.Atlas({ key = "hist_vouchers", path = "vouchers.png", px = 71, py = 95 })
+-- 标签图标：34x34/格（0 革命预兆 / 1 加冕典礼），由 draw_tags.py 生成
+SMODS.Atlas({ key = "hist_tags", path = "tags.png", px = 34, py = 34 })
 
 -- "吞并"角标贴纸：被吞小丑右下角常驻标签（被吞=行省陈列，设计案 §3.2）
 SMODS.Sticker({
@@ -153,71 +155,140 @@ SMODS.Sticker({
 	},
 })
 
--- 免死金牌角标：本局第一次将被销毁时免除，用后即摘（占位复用原版 stickers 帧）
+-- ===== 贴纸（hist_stickers）：中英各一帧，zh 在第 1 行、en 在第 2 行 =====
+-- 图由 桌面/worldhist-art/draw_sticker_text.py 程序生成（1x 内容区 36x17，位于格子右下角）。
+
+-- 免死金牌角标：本局第一次将被销毁时免除，用后即摘
 SMODS.Sticker({
 	key = "hist_exempt",
-	pos = { x = 5, y = 0 },
+	atlas = "hist_stickers",
+	pos = hist_lang_zh() and { x = 2, y = 0 } or { x = 2, y = 1 },
 	badge_colour = HEX("c8a028"),
 	prefix_config = { key = false },
 	should_apply = false,
 	order = 11,
+	loc_txt = {
+		["zh_CN"] = {
+			name = "免死金牌",
+			text = { "本局首次将被销毁时免除，", "{C:attention}随即失效{}" },
+		},
+		["en-us"] = {
+			name = "Iron Certificate",
+			text = { "Prevents the first destruction", "this run, then {C:attention}expires{}" },
+		},
+	},
 })
 
--- 大宪章"人身保护"角标：当回合不可禁用/销毁，每回合随机重发（占位复用原版 stickers 帧）
+-- 大宪章"人身保护"角标：当回合不可禁用/销毁，每回合随机重发
 SMODS.Sticker({
 	key = "hist_habeas",
-	pos = { x = 5, y = 0 },
+	atlas = "hist_stickers",
+	pos = hist_lang_zh() and { x = 3, y = 0 } or { x = 3, y = 1 },
 	badge_colour = HEX("3f6e5a"),
 	prefix_config = { key = false },
 	should_apply = false,
 	order = 12,
+	loc_txt = {
+		["zh_CN"] = {
+			name = "人身保护",
+			text = { "本回合不会被{C:attention}禁用{}或{C:attention}销毁{}" },
+		},
+		["en-us"] = {
+			name = "Habeas Corpus",
+			text = { "Cannot be {C:attention}debuffed{} or", "{C:attention}destroyed{} this round" },
+		},
+	},
 })
 
--- 罗伯斯庇尔的"嫌疑"角标：被标记者本回合不结算（占位复用原版 stickers 帧）
+-- 罗伯斯庇尔的"嫌疑"角标：被标记者本回合不结算
 SMODS.Sticker({
 	key = "hist_suspect",
-	pos = { x = 5, y = 0 },
+	atlas = "hist_stickers",
+	pos = hist_lang_zh() and { x = 4, y = 0 } or { x = 4, y = 1 },
 	badge_colour = HEX("7c1f1f"),
 	prefix_config = { key = false },
 	should_apply = false,
 	order = 13,
+	loc_txt = {
+		["zh_CN"] = {
+			name = "嫌疑",
+			text = { "本回合{C:attention}不结算{}" },
+		},
+		["en-us"] = {
+			name = "Suspect",
+			text = { "{C:attention}Does not score{} this round" },
+		},
+	},
 })
 
--- 乾隆"御批"角标：打在手牌上，该牌每计分一次 +50 筹码，逐回合重发（占位复用原版 stickers 帧）
+-- 乾隆"御批"角标：打在手牌上，该牌每计分一次 +50 筹码，逐回合重发
 SMODS.Sticker({
 	key = "hist_yubi",
-	pos = { x = 5, y = 0 },
+	atlas = "hist_stickers",
+	pos = hist_lang_zh() and { x = 5, y = 0 } or { x = 5, y = 1 },
 	badge_colour = HEX("b03a2e"),
 	prefix_config = { key = false },
 	should_apply = false,
 	order = 14,
+	loc_txt = {
+		["zh_CN"] = {
+			name = "御批",
+			text = { "每次计分{C:chips}+50{} 筹码" },
+		},
+		["en-us"] = {
+			name = "Imperial Red",
+			text = { "{C:chips}+50{} Chips each time scored" },
+		},
+	},
 })
 
--- 光荣革命"议会架空"角标：被标记的小丑本回合静默，每回合重发到最右侧（占位复用原版 stickers 帧）
+-- 光荣革命"议会架空"角标：被标记的小丑本回合静默，每回合重发到最右侧
 SMODS.Sticker({
 	key = "hist_silenced",
-	pos = { x = 5, y = 0 },
+	atlas = "hist_stickers",
+	pos = hist_lang_zh() and { x = 6, y = 0 } or { x = 6, y = 1 },
 	badge_colour = HEX("2f4858"),
 	prefix_config = { key = false },
 	should_apply = false,
 	order = 15,
+	loc_txt = {
+		["zh_CN"] = {
+			name = "议会架空",
+			text = { "本回合{C:attention}静默{}，不触发效果" },
+		},
+		["en-us"] = {
+			name = "Silenced",
+			text = { "{C:attention}Silent{} this round,", "its effect does not trigger" },
+		},
+	},
 })
 
--- 琥珀屋"镶金"角标：该小丑售价 +$8，且本局可被破例出售一次（占位复用原版 stickers 帧）
+-- 琥珀屋"镶金"角标：该小丑售价 +$8，且本局可被破例出售一次
 SMODS.Sticker({
 	key = "hist_amber",
-	pos = { x = 5, y = 0 },
+	atlas = "hist_stickers",
+	pos = hist_lang_zh() and { x = 7, y = 0 } or { x = 7, y = 1 },
 	badge_colour = HEX("c9a227"),
 	prefix_config = { key = false },
 	should_apply = false,
 	order = 16,
+	loc_txt = {
+		["zh_CN"] = {
+			name = "镶金",
+			text = { "售价{C:money}+$8{}，", "本局可破例出售一次" },
+		},
+		["en-us"] = {
+			name = "Amber Clad",
+			text = { "Sell value {C:money}+$8{};", "may be sold once this run" },
+		},
+	},
 })
 
 -- 凯撒登基"元老院"角标：凯撒左右相邻的小丑被授予元老身份，皇帝触发效果时各 +倍率
--- （占位复用原版 stickers 帧，出图后改 pos 到 hist_stickers 的对应格）
 SMODS.Sticker({
 	key = "hist_senator",
-	pos = { x = 5, y = 0 },
+	atlas = "hist_stickers",
+	pos = hist_lang_zh() and { x = 8, y = 0 } or { x = 8, y = 1 },
 	badge_colour = HEX("7d3c98"),
 	prefix_config = { key = false },
 	should_apply = false,

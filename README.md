@@ -4,7 +4,11 @@
 
 历史主题 Balatro 内容 Mod：皇帝、器物、制度与革命——把世界史做进小丑牌。
 
-**v0.1.0**：49 张小丑 + 26 张消耗牌 + 18 张优惠券 + 6 个 Boss 盲注 + 2 个标签 + 20 个开局时局。三条主线——**登基、吞并、革命**——串起从嬴政到路易十六的五组人物。全卡中英双语文案。
+![预览](docs/preview.png)
+
+**v0.3.0**：49 张小丑 + 26 张消耗牌 + 18 张优惠券 + 6 个 Boss 盲注 + 2 个标签 + 20 个开局时局，中英双语文案。**美术 94 / 101 已出图**——小丑、消耗牌、优惠券、贴纸、标签全部接入自定义图集，只剩 6 个 Boss 仍在征集。
+
+三条主线——**登基、吞并、革命**——串起从嬴政到路易十六的五组人物。
 
 ## 安装
 
@@ -83,15 +87,22 @@
 
 - **101 件内容全部已实现，静态检查通过**（语法 12/12、本地化 102 键零缺失、26 个挂点全部命中）。
 - **实测覆盖率低**：仅时局系统跑通过完整链路（开局 3 选 1 → 改朝换代 → ante 3 轮换到黑铁时代）。其余条目待整局实测。
-- **美术 12%**：12 张已接自定义图集（5 张 Joker + 6 张器物 + 1 张优惠券，`hist_jokers` / `hist_relics` / `hist_vouchers`），其余为原版图集帧占位。
+- **美术 94 / 101**：六张图集全部接入，仅 6 个 Boss 盲注仍是原版帧占位。
+  - `hist_jokers` 10×5（49 张：5 组形态对 + 风云人物 36 张 + 路易十六的头）
+  - `hist_relics` 10×3（器物 14 张 + 幻灵 3 张 + 星图 9 张）
+  - `hist_vouchers` 10×2（政策 18 张）
+  - `hist_stickers` 10×2（贴纸中英各一行）、`hist_tags`（2 个标签）
+  - 图集按 1x / 2x 两套随游戏分辨率切换，帧尺寸 71×95 / 142×190。
 - 部分数值为草案，整局平衡待后续版本。
 
-## 美术占位征集 🎨
+## 美术征集 🎨
 
-欢迎为卡片投稿原创美术：
+六条内容线已全部出图，**只剩 6 个 Boss 盲注**：恐怖统治·罗伯斯庇尔、朕即国家·路易十四、大运河·隋炀帝、弭谤·周厉王、黑死病、结绳记事·印加。这六个目前仍用原版 Boss 帧占位。
+
+也欢迎替换任何一张现有卡面（同规格即可直接合入）：
 
 - 风格：Balatro 卡面，粗黑描边、平涂、高饱和撞色，**牌面无文字**（文案走本地化）。
-- 尺寸：单帧 71×95（1x）/ 142×190（2x）。
+- 尺寸：单帧 71×95（1x）/ 142×190（2x），透明留白按类型不同——小丑满幅、券与消耗牌左右各留 4–6px。
 - 投稿：画好的帧按 pos 编号提交 PR 或 Issue 附图层文件；合入后统一启用自定义图集。
 
 ## 许可
@@ -100,4 +111,4 @@ Mod 内容与代码版权归作者 jasperwang614。原版游戏版权归 LocalTh
 
 ---
 
-EN: A history-themed Balatro content mod — emperors, relics, institutions and revolutions. v0.1.0: 49 jokers, 26 consumables, 18 vouchers, 6 Boss blinds, 2 tags and 20 opening "omens". Three intertwined systems: **coronation** (five figures each with a base and an emperor form), **annexation** (Qin Shi Huang swallows the board into shells that relay their effects), and **revolution** (guillotine, Brutus, and a head that ends a Boss blind when sold). Full Chinese and English localization. Requires Lovely + Steamodded 1.0+.
+EN: A history-themed Balatro content mod — emperors, relics, institutions and revolutions. v0.3.0: 49 jokers, 26 consumables, 18 vouchers, 6 Boss blinds, 2 tags and 20 opening "omens", art 94/101. Three intertwined systems: **coronation** (five figures each with a base and an emperor form), **annexation** (Qin Shi Huang swallows the board into shells that relay their effects), and **revolution** (guillotine, Brutus, and a head that ends a Boss blind when sold). Full Chinese and English localization. Requires Lovely + Steamodded 1.0+.

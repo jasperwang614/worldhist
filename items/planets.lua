@@ -1,6 +1,6 @@
 -- items/planets.lua — 星图线（Planet 槽，设计案 §十 10.1）
 -- 隐喻：牌型等级 = 人类的认知层级；每次天文大发现 = 给对应"牌型"升一级
--- 机制与原版星球牌完全一致（level_up_hand），零数值；占位图：不写 atlas，pos 指原版 Planet 图集帧
+-- 机制与原版星球牌完全一致（level_up_hand），零数值；图集用 hist_relics（格位 17-25）
 
 return {
 	items = {
@@ -9,7 +9,8 @@ return {
 			key = "ziwei",
 			set = "Planet",
 			cost = 3,
-			pos = { x = 0, y = 0 },
+			atlas = "hist_relics",
+			pos = { x = 7, y = 1 },
 			use = function(self, card, area, copier)
 				level_up_hand(card, "High Card")
 			end,
@@ -20,7 +21,8 @@ return {
 			key = "shuangzi",
 			set = "Planet",
 			cost = 3,
-			pos = { x = 1, y = 0 },
+			atlas = "hist_relics",
+			pos = { x = 8, y = 1 },
 			use = function(self, card, area, copier)
 				level_up_hand(card, "Pair")
 			end,
@@ -31,7 +33,8 @@ return {
 			key = "sixiang",
 			set = "Planet",
 			cost = 3,
-			pos = { x = 2, y = 0 },
+			atlas = "hist_relics",
+			pos = { x = 9, y = 1 },
 			use = function(self, card, area, copier)
 				level_up_hand(card, "Four of a Kind")
 			end,
@@ -42,7 +45,8 @@ return {
 			key = "wuxing",
 			set = "Planet",
 			cost = 3,
-			pos = { x = 3, y = 0 },
+			atlas = "hist_relics",
+			pos = { x = 0, y = 2 },
 			use = function(self, card, area, copier)
 				level_up_hand(card, "Straight")
 			end,
@@ -53,7 +57,8 @@ return {
 			key = "yinhe",
 			set = "Planet",
 			cost = 3,
-			pos = { x = 4, y = 0 },
+			atlas = "hist_relics",
+			pos = { x = 1, y = 2 },
 			use = function(self, card, area, copier)
 				level_up_hand(card, "Flush")
 			end,
@@ -64,7 +69,8 @@ return {
 			key = "huangdao",
 			set = "Planet",
 			cost = 3,
-			pos = { x = 5, y = 0 },
+			atlas = "hist_relics",
+			pos = { x = 2, y = 2 },
 			use = function(self, card, area, copier)
 				level_up_hand(card, "Straight Flush")
 			end,
@@ -75,7 +81,8 @@ return {
 			key = "lianxing",
 			set = "Planet",
 			cost = 3,
-			pos = { x = 6, y = 0 },
+			atlas = "hist_relics",
+			pos = { x = 3, y = 2 },
 			use = function(self, card, area, copier)
 				level_up_hand(card, "Two Pair")
 			end,
@@ -86,7 +93,8 @@ return {
 			key = "sanhexing",
 			set = "Planet",
 			cost = 3,
-			pos = { x = 7, y = 0 },
+			atlas = "hist_relics",
+			pos = { x = 4, y = 2 },
 			use = function(self, card, area, copier)
 				level_up_hand(card, "Three of a Kind")
 			end,
@@ -97,7 +105,8 @@ return {
 			key = "sanyuan",
 			set = "Planet",
 			cost = 3,
-			pos = { x = 8, y = 0 },
+			atlas = "hist_relics",
+			pos = { x = 5, y = 2 },
 			use = function(self, card, area, copier)
 				level_up_hand(card, "Full House")
 			end,

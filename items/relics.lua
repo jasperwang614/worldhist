@@ -208,7 +208,8 @@ return {
 			key = "dagger",
 			set = "Tarot",
 			cost = 4,
-			pos = { x = 4, y = 3 },
+			atlas = "hist_relics",
+			pos = { x = 8, y = 0 },
 			can_use = function(self, card)
 				return G.hand ~= nil and #G.hand.cards > 0
 			end,
@@ -266,7 +267,8 @@ return {
 			key = "tieshiquan",
 			set = "Tarot",
 			cost = 5,
-			pos = { x = 7, y = 2 },
+			atlas = "hist_relics",
+			pos = { x = 5, y = 1 },
 			can_use = function(self, card)
 				return G.jokers and #G.jokers.highlighted >= 1
 			end,
@@ -286,7 +288,8 @@ return {
 			key = "zuizhao",
 			set = "Tarot",
 			cost = 4,
-			pos = { x = 8, y = 2 },
+			atlas = "hist_relics",
+			pos = { x = 1, y = 1 },
 			can_use = function(self, card)
 				return true
 			end,
@@ -306,7 +309,8 @@ return {
 			key = "crown",
 			set = "Tarot",
 			cost = 5,
-			pos = { x = 9, y = 2 },
+			atlas = "hist_relics",
+			pos = { x = 7, y = 0 },
 			can_use = function(self, card)
 				return HIST.find_crownable() ~= nil
 			end,
@@ -326,7 +330,8 @@ return {
 			key = "hufu",
 			set = "Tarot",
 			cost = 4,
-			pos = { x = 0, y = 3 },
+			atlas = "hist_relics",
+			pos = { x = 9, y = 0 },
 			can_use = function(self, card)
 				return G.deck and #G.deck.cards > 0
 			end,
@@ -351,7 +356,8 @@ return {
 			key = "heshibi",
 			set = "Tarot",
 			cost = 4,
-			pos = { x = 1, y = 3 },
+			atlas = "hist_relics",
+			pos = { x = 6, y = 0 },
 			use = function(self, card, area, copier)
 				local new_card = SMODS.create_card({ key = "c_hist_yuxi", area = G.consumeables })
 				if new_card then
@@ -367,7 +373,8 @@ return {
 			key = "monomakh",
 			set = "Tarot",
 			cost = 5,
-			pos = { x = 2, y = 3 },
+			atlas = "hist_relics",
+			pos = { x = 3, y = 1 },
 			can_use = function(self, card)
 				return HIST.find_crownable() ~= nil
 			end,
@@ -409,7 +416,8 @@ return {
 			key = "rubicon",
 			set = "Spectral",
 			cost = 5,
-			pos = { x = 0, y = 0 },
+			atlas = "hist_relics",
+			pos = { x = 4, y = 1 },
 			can_use = function(self, card)
 				return not HIST.rubicon
 			end,
@@ -430,7 +438,8 @@ return {
 			key = "zhenghe",
 			set = "Spectral",
 			cost = 4,
-			pos = { x = 1, y = 0 },
+			atlas = "hist_relics",
+			pos = { x = 6, y = 1 },
 			can_use = function(self, card)
 				return G.deck ~= nil
 			end,
@@ -463,7 +472,8 @@ return {
 			key = "jiaozi",
 			set = "Tarot",
 			cost = 4,
-			pos = { x = 5, y = 2 },
+			atlas = "hist_relics",
+			pos = { x = 0, y = 1 },
 			can_use = function(self, card)
 				return true
 			end,
@@ -486,7 +496,8 @@ return {
 			key = "amber_room",
 			set = "Spectral",
 			cost = 4,
-			pos = { x = 2, y = 0 },
+			atlas = "hist_relics",
+			pos = { x = 2, y = 1 },
 			can_use = function(self, card)
 				return G.jokers ~= nil and #G.jokers.highlighted > 0
 			end,

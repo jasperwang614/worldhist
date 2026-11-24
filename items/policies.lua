@@ -8,7 +8,8 @@ return {
 		SMODS.Voucher({
 			key = "junxian",
 			cost = 10,
-			pos = { x = 0, y = 0 },
+			atlas = "hist_vouchers",
+			pos = { x = 1, y = 0 },
 			apply_to_run = function(self)
 				local n = 0
 				if G.jokers then
@@ -29,8 +30,8 @@ return {
 		SMODS.Voucher({
 			key = "stone_eye",
 			cost = 10,
-			pos = { x = 0, y = 0 },
 			atlas = "hist_vouchers",
+			pos = { x = 0, y = 0 },
 		}),
 
 		-- 大宪章：每回合开始，随机一张 Joker 获"人身保护"——王权也进了法律（设计案 §八）
@@ -38,6 +39,7 @@ return {
 		SMODS.Voucher({
 			key = "magna_carta",
 			cost = 10,
+			atlas = "hist_vouchers",
 			pos = { x = 2, y = 0 },
 		}),
 
@@ -46,6 +48,7 @@ return {
 		SMODS.Voucher({
 			key = "95thesis",
 			cost = 10,
+			atlas = "hist_vouchers",
 			pos = { x = 3, y = 0 },
 		}),
 
@@ -54,6 +57,7 @@ return {
 		SMODS.Voucher({
 			key = "xiantu",
 			cost = 8,
+			atlas = "hist_vouchers",
 			pos = { x = 4, y = 0 },
 			apply_to_run = function(self)
 				HIST.change_joker_limit(-1)
@@ -65,6 +69,7 @@ return {
 		SMODS.Voucher({
 			key = "tuntian",
 			cost = 8,
+			atlas = "hist_vouchers",
 			pos = { x = 5, y = 0 },
 		}),
 
@@ -73,6 +78,7 @@ return {
 		SMODS.Voucher({
 			key = "fengjian",
 			cost = 8,
+			atlas = "hist_vouchers",
 			pos = { x = 6, y = 0 },
 			apply_to_run = function(self)
 				HIST.change_joker_limit(1)
@@ -84,6 +90,7 @@ return {
 		SMODS.Voucher({
 			key = "solon",
 			cost = 8,
+			atlas = "hist_vouchers",
 			pos = { x = 7, y = 0 },
 			apply_to_run = function(self)
 				G.hand:change_size(2)
@@ -95,6 +102,7 @@ return {
 		SMODS.Voucher({
 			key = "changping",
 			cost = 8,
+			atlas = "hist_vouchers",
 			pos = { x = 8, y = 0 },
 		}),
 
@@ -103,6 +111,7 @@ return {
 		SMODS.Voucher({
 			key = "code_napoleon",
 			cost = 10,
+			atlas = "hist_vouchers",
 			pos = { x = 9, y = 0 },
 		}),
 
@@ -113,6 +122,7 @@ return {
 		SMODS.Voucher({
 			key = "lydia",
 			cost = 8,
+			atlas = "hist_vouchers",
 			pos = { x = 0, y = 1 },
 		}),
 
@@ -121,6 +131,7 @@ return {
 		SMODS.Voucher({
 			key = "enclosure",
 			cost = 8,
+			atlas = "hist_vouchers",
 			pos = { x = 1, y = 1 },
 			apply_to_run = function(self)
 				G.hand:change_size(-1)
@@ -134,6 +145,7 @@ return {
 		SMODS.Voucher({
 			key = "hansa",
 			cost = 10,
+			atlas = "hist_vouchers",
 			pos = { x = 2, y = 1 },
 			apply_to_run = function(self)
 				-- 原版同款：放进事件里跑，等商店结构就位再改（change_shop_size 自带 G.GAME.shop 判空）
@@ -152,6 +164,7 @@ return {
 		SMODS.Voucher({
 			key = "library",
 			cost = 10,
+			atlas = "hist_vouchers",
 			pos = { x = 3, y = 1 },
 			apply_to_run = function(self)
 				if G.consumeables then
@@ -165,6 +178,7 @@ return {
 		SMODS.Voucher({
 			key = "yam",
 			cost = 10,
+			atlas = "hist_vouchers",
 			pos = { x = 4, y = 1 },
 			apply_to_run = function(self)
 				if G.GAME and G.GAME.round_resets then
@@ -179,6 +193,7 @@ return {
 		SMODS.Voucher({
 			key = "keju",
 			cost = 10,
+			atlas = "hist_vouchers",
 			pos = { x = 5, y = 1 },
 		}),
 
@@ -190,6 +205,7 @@ return {
 		SMODS.Voucher({
 			key = "eic",
 			cost = 10,
+			atlas = "hist_vouchers",
 			pos = { x = 6, y = 1 },
 		}),
 
@@ -201,6 +217,7 @@ return {
 		SMODS.Voucher({
 			key = "glorious",
 			cost = 10,
+			atlas = "hist_vouchers",
 			pos = { x = 7, y = 1 },
 		}),
 	},

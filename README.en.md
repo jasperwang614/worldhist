@@ -4,7 +4,11 @@
 
 A history-themed Balatro content mod: emperors, relics, institutions and revolutions — world history pressed into jokers.
 
-**v0.1.0**: 49 jokers + 26 consumables + 18 vouchers + 6 Boss blinds + 2 tags + 20 opening omens. Three interlocking systems — **coronation**, **annexation** and **revolution** — carry five figures from Ying Zheng to Louis XVI. Fully localized in Chinese and English.
+![preview](docs/preview.png)
+
+**v0.3.0**: 49 jokers + 26 consumables + 18 vouchers + 6 Boss blinds + 2 tags + 20 opening omens, fully localized in Chinese and English. **Art is 94 / 101** — every joker, consumable, voucher, sticker and tag now uses a custom atlas; only the 6 Boss blinds are still placeholder frames.
+
+Three interlocking systems — **coronation**, **annexation** and **revolution** — carry five figures from Ying Zheng to Louis XVI.
 
 ## Installation
 
@@ -83,15 +87,22 @@ Suit locks hook into the return value of `get_poker_hand_info` — preview and s
 
 - **All 101 items are implemented and pass static checks**: syntax 12/12 files, 102 localization keys per language with zero missing and zero orphans, 26/26 hooked vanilla functions present.
 - **Test coverage is low**: only the omen system has been verified end-to-end (opening pick → Dynastic Change → rotation to Iron Age at ante 3). The remaining entries still need full-run testing.
-- **Art is 12% done**: 12 cards use custom atlases (5 jokers, 6 relics, 1 voucher — `hist_jokers` / `hist_relics` / `hist_vouchers`); the rest fall back to vanilla atlas frames.
+- **Art is 94 / 101**: six atlases are wired up; only the 6 Boss blinds still fall back to vanilla frames.
+  - `hist_jokers` 10×5 (49 cards: five form pairs + 36 historical figures + the Head of Louis XVI)
+  - `hist_relics` 10×3 (14 relics + 3 spectral + 9 planet cards)
+  - `hist_vouchers` 10×2 (18 policies)
+  - `hist_stickers` 10×2 (stickers, one Chinese row and one English row) and `hist_tags` (2 tags)
+  - Both 1x and 2x sets ship; frames are 71×95 / 142×190.
 - Some numbers are first drafts; balance will be adjusted after full-run integration testing.
 
 ## Art Wanted 🎨
 
-Contributions of original card art are very welcome:
+All six content lines are drawn; **only the 6 Boss blinds remain** — Reign of Terror (Robespierre), L'État c'est moi (Louis XIV), the Grand Canal (Sui Yangdi), Suppressing Criticism (King Li of Zhou), the Black Death, and Quipu (the Inca). They currently borrow vanilla Boss frames.
+
+Replacing any existing card is welcome too — same spec, drops straight in:
 
 - Style: Balatro card art — heavy black outlines, flat fills, high-saturation clashing colours, **no text on the art** (all copy lives in localization).
-- Size: 71×95 per frame (1x) / 142×190 (2x).
+- Size: 71×95 per frame (1x) / 142×190 (2x); transparent margins differ by type — jokers full-bleed, vouchers and consumables 4–6px on each side.
 - Submit frames by pos index as a PR, or open an Issue with your layered source file. Accepted art gets enabled as a custom atlas.
 
 ## License

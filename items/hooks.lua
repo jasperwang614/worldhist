@@ -1188,3 +1188,19 @@ function Game:start_run(args)
 	HIST.dbg(("[worldhist] start_run: limit=%d cards=%d shells=%d"):format(
 		G.jokers.config.card_limit, #G.jokers.cards, n))
 end
+
+-- ============ 旧存档兼容：星球卡补齐 hand_type ============
+-- v0.3.2 及更早的星图卡没写 config.hand_type，旧存档里这些卡的 ability.consumeable
+-- 是读档时整块还原的（Card:load 直接 self.ability = cardTable.ability），
+-- 不会重新走 set_ability，于是读档后仍旧缺字段 → 继续置灰、用了也没效果。
+-- 这里在读档后按 center.config 补一次，新存档与旧存档行为一致。
+local hist_card_load_ref = Card.load
+function Card:load(cardTable, other_card)
+	hist_card_load_ref(self, cardTable, other_card)
+	local center = self.config and self.config.center
+	local hand_type = center and center.config and center.config.hand_type
+	if hand_type and self.ability and (center.set == "Planet" or self.ability.set == "Planet") then
+		self.ability.consumeable = self.ability.consumeable or {}
+		self.ability.consumeable.hand_type = self.ability.consumeable.hand_type or hand_type
+	end
+end

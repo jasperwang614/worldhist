@@ -1,5 +1,14 @@
 # 更新日志
 
+## v0.3.3 — 2026-11-26
+
+**修复：9 张星图（升牌型）一直是灰的，点不了**
+
+- 根因：星图走 `set = "Planet"`，但只在自己写的 `use` 里调 `level_up_hand`，**没写 `config = { hand_type = ... }`**。原版 `Card:can_use_consumeable` 判断星球卡可用性的第一句就是「有没有 `ability.consumeable.hand_type`」，没有就落到选牌/开包状态的判定里，全部不满足 → 永远置灰。
+- 修法：按原版星球牌的写法补齐 `config.hand_type`（紫微垣=高牌、双子星=对子、四象=四条、五星连珠=顺子、银河=同花、黄道=同花顺、联星=两对、三合星=三条、三垣=葫芦），同时删掉自定义 `use`——原版 `Card:use_consumeable` 见到 `hand_type` 会自动升级，留着 `use` 反而会提前 return、跳过原版的升级动画与提示。
+- 顺手修好两处连带问题：天文台券（`v_observatory`）读的也是 `consumeable.hand_type`，之前对星图不生效；察举制（牌型升级翻倍）现在也能正常作用在星图上。
+- **旧存档兼容**：读档时 `Card:load` 直接整块还原 `ability`、不会重走 `set_ability`，所以 v0.3.2 及更早存档里的星图仍然缺字段。已在读档后按 `center.config.hand_type` 补一次，旧档继续玩也能立刻用。
+
 ## v0.3.2 — 2026-11-26
 
 **修复：印加 Boss 打完后，商店里所有消耗牌都是灰的、点不了**

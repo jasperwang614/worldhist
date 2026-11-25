@@ -6,7 +6,7 @@
 
 ![预览](docs/preview.png)
 
-**v0.3.3**：49 张小丑 + 26 张消耗牌 + 18 张优惠券 + 6 个 Boss 盲注 + 2 个标签 + 20 个开局时局，中英双语文案。**美术 94 / 101 已出图**——小丑、消耗牌、优惠券、贴纸、标签全部接入自定义图集，只剩 6 个 Boss 仍在征集。
+**v0.3.4**：49 张小丑 + 26 张消耗牌 + 18 张优惠券 + 6 个 Boss 盲注 + 2 个标签 + 20 个开局时局，中英双语文案。**美术 94 / 101 已出图**——小丑、消耗牌、优惠券、贴纸、标签全部接入自定义图集，只剩 6 个 Boss 仍在征集。
 
 三条主线——**登基、吞并、革命**——串起从嬴政到路易十六的五组人物。
 
@@ -96,11 +96,26 @@
   - 图集按 1x / 2x 两套随游戏分辨率切换，帧尺寸 71×95 / 142×190。
 - 部分数值为草案，整局平衡待后续版本。
 
+## 这个 mod 是怎么做出来的（AI 说明）
+
+先把话说清楚：**卡面美术是 AI 生成的，代码和文案也有 AI 参与。** 我不想让这件事靠别人猜出来，也不想等被指出来才承认。
+
+具体分工是这样的：
+
+- **卡面（101 件中的 94 件）**：用文生图模型出图。画什么、什么朝代气质、主体怎么摆、配色往哪走，是我写提示词定的；出图后由我筛选、裁切对齐图集格线、调色提亮、拼成 1x / 2x 两套。像素是模型产的，「这张卡该画成什么样」不是。
+- **代码**：AI 辅助编写，设计和验收在我。登基、吞并、革命三套系统的规则，时局轮换的状态机，花色锁定的计分入口，都是我先定行为再和模型一起实现，然后对着 Balatro 反编译出来的源码逐条核对——比如 `blind.in_blind` 这个字段其实不存在，是查了源码才发现的。
+- **文案与本地化**：中英双语 200 多条。主题、史实内核、卡名由我定，措辞在 AI 草稿上改。
+- **数值与平衡**：101 个对象的数值、彼此克制的关系、每个时局「一得一失」的分寸，是几十局测试里一点点调出来的。
+
+我知道不少玩家不接受 mod 里出现 AI 素材，这个态度是合理的，我没打算说服谁。把这个说明放在这里，只是让你在下载之前就知道自己装的是什么。
+
+美术我按**可替换的占位**对待：图集格位、帧尺寸、留白规格都写在下面。任何一张都能用一张画好的 PNG 直接换掉，换掉的会署名。
+
 ## 美术征集 🎨
 
 六条内容线已全部出图，**只剩 6 个 Boss 盲注**：恐怖统治·罗伯斯庇尔、朕即国家·路易十四、大运河·隋炀帝、弭谤·周厉王、黑死病、结绳记事·印加。这六个目前仍用原版 Boss 帧占位。
 
-也欢迎替换任何一张现有卡面（同规格即可直接合入）：
+**现有 94 张 AI 卡面全部按占位处理，欢迎画师逐张替换**——这是这个 mod 现在最需要的帮助。同规格即可直接合入，作者会在 README 和 Release 里署名。
 
 - 风格：Balatro 卡面，粗黑描边、平涂、高饱和撞色，**牌面无文字**（文案走本地化）。
 - 尺寸：单帧 71×95（1x）/ 142×190（2x），透明留白按类型不同——小丑满幅、券与消耗牌左右各留 4–6px。
@@ -112,4 +127,4 @@ Mod 内容与代码版权归作者 jasperwang614。原版游戏版权归 LocalTh
 
 ---
 
-EN: A history-themed Balatro content mod — emperors, relics, institutions and revolutions. v0.3.3: 49 jokers, 26 consumables, 18 vouchers, 6 Boss blinds, 2 tags and 20 opening "omens", art 94/101. Three intertwined systems: **coronation** (five figures each with a base and an emperor form), **annexation** (Qin Shi Huang swallows the board into shells that relay their effects), and **revolution** (guillotine, Brutus, and a head that ends a Boss blind when sold). Full Chinese and English localization. Requires Lovely + Steamodded 1.0+.
+EN: A history-themed Balatro content mod — emperors, relics, institutions and revolutions. v0.3.4: 49 jokers, 26 consumables, 18 vouchers, 6 Boss blinds, 2 tags and 20 opening "omens", art 94/101. Three intertwined systems: **coronation** (five figures each with a base and an emperor form), **annexation** (Qin Shi Huang swallows the board into shells that relay their effects), and **revolution** (guillotine, Brutus, and a head that ends a Boss blind when sold). Full Chinese and English localization. Requires Lovely + Steamodded 1.0+.

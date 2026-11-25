@@ -539,7 +539,12 @@ end
 local can_sell_ref = Card.can_sell_card
 function Card:can_sell_card(context)
 	-- 周厉王·弭谤：本回合道路以目，什么都卖不得（设计案 §九）
-	if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind
+	-- ⚠ 同印加：击败后 G.GAME.blind 仍指向他，只判 key 会让商店/开包阶段全都卖不了。
+	local st = G.STATE
+	local in_blind = st == G.STATES.SELECTING_HAND
+		or st == G.STATES.HAND_PLAYED
+		or st == G.STATES.DRAW_TO_HAND
+	if in_blind and G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind
 		and G.GAME.blind.config.blind.key == "bl_hist_zhouliwang"
 	then
 		return false
@@ -556,10 +561,18 @@ end
 
 -- ★ 结绳记事·印加（Boss）：本盲注内不能使用任何消耗牌（card.lua:1840 是唯一的可用性入口）
 --   一个没有文字的帝国，靠绳结记账——你的塔罗、星球、器物在这片土地上都读不出来
+--   ⚠ 必须限定"盲注进行中"：击败印加后 G.GAME.blind 仍指向它（直到下个盲注开始），
+--     只判 key 会把商店、开包、结算整个阶段的所有消耗牌一起置灰——玩家会以为卡坏了。
+--     原版允许用牌的状态只有 SELECTING_HAND / HAND_PLAYED / DRAW_TO_HAND。
 local can_use_consumeable_ref = Card.can_use_consumeable
 function Card:can_use_consumeable(any_state, skip_check)
-	if G.GAME and G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind
-		and G.GAME.blind.config.blind.key == "bl_hist_inca"
+	local b = G.GAME and G.GAME.blind
+	local st = G.STATE
+	local in_blind = st == G.STATES.SELECTING_HAND
+		or st == G.STATES.HAND_PLAYED
+		or st == G.STATES.DRAW_TO_HAND
+	if in_blind and b and b.config and b.config.blind
+		and b.config.blind.key == "bl_hist_inca"
 	then
 		return false
 	end

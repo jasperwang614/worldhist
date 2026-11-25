@@ -57,54 +57,11 @@ HIST.crown_items = {
 	c_hist_anointing = true,
 }
 
--- 开发调试：开新局自动加入"当前测试中的卡"（unproven 同款，正式发布时置 nil 删除本段）。
--- 当前测：元老院 + 匕首 —— 尤利乌斯居中登基成凯撒，左右两张原版小丑受衔变元老；
---         桂冠登基，匕首弃牌换下一手爆发。
--- 形态映射参考：HIST.forms(:7) / initial_forms(:15) / special_guillotine(:39)
-local DEBUG_ADD_CARDS = {
-	"j_joker",        -- 左邻座 → 元老
-	"j_hist_julius",  -- 尤利乌斯（登基后为凯撒，站在中间）
-	"j_greedy_joker", -- 右邻座 → 元老
-}
-
--- 调试负片：把这张 DEBUG 卡转成负片（测负片壳：原版自带 +1 自由槽，吞并补偿应跳过）
-local DEBUG_NEGATIVE = nil -- "j_greedy_joker"
-
-local DEBUG_ADD_CONSUMABLES = {
-	"c_hist_laurel", -- 登基道具（罗马的玉玺）
-	"c_hist_dagger", -- 匕首：随机弃牌，下一手 +1~10 倍率
-}
-
-if DEBUG_ADD_CARDS or DEBUG_ADD_CONSUMABLES then
-	local start_run_ref = Game.start_run
-	function Game:start_run(args)
-		start_run_ref(self, args)
-		if G.GAME and not G.GAME.hist_debug_cards_added then
-			G.GAME.hist_debug_cards_added = true
-			if DEBUG_ADD_CARDS then
-				for _, center_key in ipairs(DEBUG_ADD_CARDS) do
-					pcall(add_joker, center_key)
-					if center_key == DEBUG_NEGATIVE then
-						for _, c in ipairs(G.jokers.cards) do
-							if c.config.center.key == center_key and not (c.edition and c.edition.negative) then
-								c:set_edition({ negative = true }, true)
-							end
-						end
-					end
-				end
-			end
-			if DEBUG_ADD_CONSUMABLES then
-				for _, center_key in ipairs(DEBUG_ADD_CONSUMABLES) do
-					pcall(function()
-						local c = SMODS.create_card({ key = center_key, area = G.consumeables })
-						if c then
-							c:add_to_deck()
-							G.consumeables:emplace(c)
-						end
-					end)
-				end
-			end
-		end
+-- 调试输出开关：正式版静默。排查问题时可临时改成 true，或在控制台执行 HIST.debug = true。
+HIST.debug = false
+function HIST.dbg(...)
+	if HIST.debug then
+		print(...)
 	end
 end
 

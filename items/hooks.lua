@@ -364,7 +364,7 @@ function HIST.swallow(emperor, target)
 		HIST.change_joker_limit(1)
 		target.hist_junxian_applied = true
 	end
-	print(("[worldhist] swallow %s(neg=%s) -> limit=%d cards=%d"):format(
+	HIST.dbg(("[worldhist] swallow %s(neg=%s) -> limit=%d cards=%d"):format(
 		target.config.center.key, tostring(target.edition and target.edition.negative),
 		G.jokers.config.card_limit, #G.jokers.cards))
 	local e = emperor.ability.extra
@@ -428,13 +428,13 @@ function HIST.unswallow_all(emperor)
 				c.hist_junxian_applied = nil
 				HIST.change_joker_limit(-1)
 			end
-			print(("[worldhist] unswallow %s -> limit=%d"):format(
+			HIST.dbg(("[worldhist] unswallow %s -> limit=%d"):format(
 				c.config.center.key, G.jokers.config.card_limit))
 		end
 	end
 	emperor.ability.extra.absorbed = {}
 	HIST.expected_limit = G.jokers.config.card_limit
-	print(("[worldhist] unswallow_all -> limit=%d cards=%d"):format(
+	HIST.dbg(("[worldhist] unswallow_all -> limit=%d cards=%d"):format(
 		G.jokers.config.card_limit, #G.jokers.cards))
 end
 
@@ -457,7 +457,7 @@ function CardArea:handle_card_limit(...)
 		cl.extra_slots_used = 0
 		if not HIST_slot_fix_logged then
 			HIST_slot_fix_logged = true
-			print(("[worldhist] slot fix: extra_slots_used 补 0 (type=%s, is_G.jokers=%s, TAROT_INTERRUPT=%s)")
+			HIST.dbg(("[worldhist] slot fix: extra_slots_used 补 0 (type=%s, is_G.jokers=%s, TAROT_INTERRUPT=%s)")
 				:format(
 					tostring(self.config and self.config.type),
 					tostring(G.jokers and self == G.jokers),
@@ -657,7 +657,7 @@ function Card:remove_from_deck(from_debuff)
 	if not from_debuff and self.ability and self.ability.hist_absorbed and self.hist_limit_applied then
 		self.hist_limit_applied = nil
 		HIST.change_joker_limit(-1)
-		print(("[worldhist] shell left deck %s -> limit=%d"):format(
+		HIST.dbg(("[worldhist] shell left deck %s -> limit=%d"):format(
 			self.config.center.key, G.jokers.config.card_limit))
 	end
 end
@@ -715,7 +715,7 @@ function HIST.keju_graduate()
 		return nil
 	end
 	local ok = pcall(level_up_hand, nil, best, true, 1)
-	print(("[worldhist] keju: %s x%d -> %s"):format(best, bestn, tostring(ok)))
+	HIST.dbg(("[worldhist] keju: %s x%d -> %s"):format(best, bestn, tostring(ok)))
 	return best, ok
 end
 
@@ -806,7 +806,7 @@ function Blind:set_blind(blind, reset, silent)
 	-- 槽位自愈：若上限被外部重算洗掉，按记录值补回（必须走 change_size，禁裸写虚字段）
 	if HIST.expected_limit and G.jokers and G.jokers.config.card_limit < HIST.expected_limit then
 		HIST.change_joker_limit(HIST.expected_limit - G.jokers.config.card_limit)
-		print("[worldhist] limit wiped, restored to " .. G.jokers.config.card_limit)
+		HIST.dbg("[worldhist] limit wiped, restored to " .. G.jokers.config.card_limit)
 	end
 end
 
@@ -1172,6 +1172,6 @@ function Game:start_run(args)
 	-- card_limits 随存档持久化（CardArea:save 连 config 一起存，补偿已在档内），
 	-- 读档只重建反向链接，不得重贴补偿
 	HIST.expected_limit = G.jokers.config.card_limit
-	print(("[worldhist] start_run: limit=%d cards=%d shells=%d"):format(
+	HIST.dbg(("[worldhist] start_run: limit=%d cards=%d shells=%d"):format(
 		G.jokers.config.card_limit, #G.jokers.cards, n))
 end

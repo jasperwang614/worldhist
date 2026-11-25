@@ -234,7 +234,7 @@ HIST.omens = {
 			local picked = pseudorandom_element(suits, pseudoseed("hist_purge_suit"))
 			local n = purge_suit(picked)
 			G.GAME.hist_purged_suit = n > 0 and picked or nil
-			print(("[worldhist] omen purge: %s x%d"):format(picked, n))
+			HIST.dbg(("[worldhist] omen purge: %s x%d"):format(picked, n))
 			-- 一张都没烧掉（牌组低于下限）→ 不记已领，也不算这个时局生效
 			return n > 0
 		end,
@@ -651,7 +651,7 @@ function HIST.pick_omen(key)
 			end,
 		}))
 	end
-	print(("[worldhist] omen chosen: %s%s"):format(chosen, wanted ~= chosen and (" (random of " .. wanted .. ")") or ""))
+	HIST.dbg(("[worldhist] omen chosen: %s%s"):format(chosen, wanted ~= chosen and (" (random of " .. wanted .. ")") or ""))
 end
 
 -- 时局自行改换（轮换模式开启后由 hooks.lua 在底注变化时调用，换到别的时局也不停）
@@ -681,7 +681,7 @@ function HIST.rotate_omen()
 			return true
 		end,
 	}))
-	print(("[worldhist] omen rotated: %s -> %s (ante %s)"):format(
+	HIST.dbg(("[worldhist] omen rotated: %s -> %s (ante %s)"):format(
 		tostring(old), tostring(new), tostring(G.GAME.round_resets and G.GAME.round_resets.ante)))
 end
 
@@ -825,7 +825,7 @@ if type(create_UIBox_HUD) == "function" then
 			end
 		end)
 		if not ok then
-			print("[worldhist] omen HUD insert failed: " .. tostring(err))
+			HIST.dbg("[worldhist] omen HUD insert failed: " .. tostring(err))
 		end
 		return def
 	end

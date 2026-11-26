@@ -409,6 +409,19 @@ function HIST.steal_shell(new_emperor, shell)
 	return true
 end
 
+-- 某人名下是否还有壳（叶卡捷琳娜抢来的壳不属于 emperor_keys，不能靠 is_emperor 判定）
+function HIST.has_shells(owner)
+	if not G.jokers then
+		return false
+	end
+	for _, c in ipairs(G.jokers.cards) do
+		if c.ability.hist_absorbed and c.hist_emperor == owner then
+			return true
+		end
+	end
+	return false
+end
+
 -- 解除吞并（出售/断头台/皇帝被毁）：恢复独立 + 归还槽位（树倒猢狲散）
 function HIST.unswallow_all(emperor)
 	if not G.jokers then
@@ -432,7 +445,9 @@ function HIST.unswallow_all(emperor)
 				c.config.center.key, G.jokers.config.card_limit))
 		end
 	end
-	emperor.ability.extra.absorbed = {}
+	if emperor.ability and emperor.ability.extra then
+		emperor.ability.extra.absorbed = {}
+	end
 	HIST.expected_limit = G.jokers.config.card_limit
 	HIST.dbg(("[worldhist] unswallow_all -> limit=%d cards=%d"):format(
 		G.jokers.config.card_limit, #G.jokers.cards))
@@ -593,7 +608,9 @@ function Card:sell_card()
 	then
 		G.GAME.blind:defeat()
 	end
-	if HIST.is_emperor(self) then
+	-- 卖皇帝先放壳；叶卡捷琳娜不是 emperor_keys 成员，但她抢来的壳同样要归还槽位，
+	-- 所以判定用「名下有壳」而不是 is_emperor（否则那些 +1 永远收不回来）
+	if HIST.is_emperor(self) or HIST.has_shells(self) then
 		HIST.unswallow_all(self)
 	end
 	return sell_card_ref(self)
@@ -611,7 +628,14 @@ function Card:click()
 		HIST.crown(self)
 		return
 	end
-	if HIST.is_emperor(self) and self.area == G.jokers then
+	-- 吞并为秦始皇专属（设计案 §2.1/§5，设计者 2026-09-04 拍板）：
+	-- 只有登记在 coronation_swallow 的皇帝能进入吞并模式。其他皇帝有皇帝形态但不能吞——
+	-- 统一代发的循环只写在秦始皇卡上（emperors.lua），别家吞了壳没人代发，
+	-- 壳会被 calculate_joker 的吞并门永久静默，等于连吞几张废几张。
+	if self.area == G.jokers
+		and self.config and self.config.center
+		and HIST.coronation_swallow[self.config.center.key]
+	then
 		if HIST.eat_mode == self then
 			HIST.eat_mode = nil
 		else
@@ -648,7 +672,10 @@ function Card:click()
 		end
 		return
 	end
-	if HIST.eat_mode and self.area == G.jokers and self ~= HIST.eat_mode then
+	if HIST.eat_mode and self.area == G.jokers and self ~= HIST.eat_mode
+		and HIST.eat_mode.config and HIST.eat_mode.config.center
+		and HIST.coronation_swallow[HIST.eat_mode.config.center.key]
+	then
 		local emperor = HIST.eat_mode
 		if HIST.swallow(emperor, self) then
 			HIST.eat_mode = nil

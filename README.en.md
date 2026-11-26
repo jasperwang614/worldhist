@@ -6,7 +6,7 @@ A history-themed Balatro content mod: emperors, relics, institutions and revolut
 
 ![preview](docs/preview.png)
 
-**v0.4.0**: 51 jokers + 26 consumables + 18 vouchers + 6 Boss blinds + 2 tags + 20 opening omens, fully localized in Chinese and English. **Art is 96 / 103** — every joker, consumable, voucher, sticker and tag now uses a custom atlas; only the 6 Boss blinds are still placeholder frames.
+**v0.4.1**: 51 jokers + 26 consumables + 18 vouchers + 6 Boss blinds + 2 tags + 20 opening omens, fully localized in Chinese and English. **Art is 96 / 103** — every joker, consumable, voucher, sticker and tag now uses a custom atlas; only the 6 Boss blinds are still placeholder frames.
 
 Three interlocking systems — **coronation**, **annexation** and **revolution** — carry five figures from Ying Zheng to Louis XVI.
 

@@ -6,7 +6,7 @@
 
 ![预览](docs/preview.png)
 
-**v0.4.0**：51 张小丑 + 26 张消耗牌 + 18 张优惠券 + 6 个 Boss 盲注 + 2 个标签 + 20 个开局时局，中英双语文案。**美术 96 / 103 已出图**——小丑、消耗牌、优惠券、贴纸、标签全部接入自定义图集，只剩 6 个 Boss 仍在征集。
+**v0.4.1**：51 张小丑 + 26 张消耗牌 + 18 张优惠券 + 6 个 Boss 盲注 + 2 个标签 + 20 个开局时局，中英双语文案。**美术 96 / 103 已出图**——小丑、消耗牌、优惠券、贴纸、标签全部接入自定义图集，只剩 6 个 Boss 仍在征集。
 
 三条主线——**登基、吞并、革命**——串起从嬴政到路易十六的五组人物。
 
@@ -127,4 +127,4 @@ Mod 内容与代码版权归作者 jasperwang614。原版游戏版权归 LocalTh
 
 ---
 
-EN: A history-themed Balatro content mod — emperors, relics, institutions and revolutions. v0.4.0: 51 jokers, 26 consumables, 18 vouchers, 6 Boss blinds, 2 tags and 20 opening "omens", art 96/103. Three intertwined systems: **coronation** (five figures each with a base and an emperor form), **annexation** (Qin Shi Huang swallows the board into shells that relay their effects), and **revolution** (guillotine, Brutus, and a head that ends a Boss blind when sold). Full Chinese and English localization. Requires Lovely + Steamodded 1.0+.
+EN: A history-themed Balatro content mod — emperors, relics, institutions and revolutions. v0.4.1: 51 jokers, 26 consumables, 18 vouchers, 6 Boss blinds, 2 tags and 20 opening "omens", art 96/103. Three intertwined systems: **coronation** (five figures each with a base and an emperor form), **annexation** (Qin Shi Huang swallows the board into shells that relay their effects), and **revolution** (guillotine, Brutus, and a head that ends a Boss blind when sold). Full Chinese and English localization. Requires Lovely + Steamodded 1.0+.

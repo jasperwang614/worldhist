@@ -1121,11 +1121,11 @@ return {
 			end,
 		}),
 
-		-- 赵高：指鹿为马——回合开始时随机把一张手牌的花色改成另一种
-		-- 新维度：花色改写（全 mod 唯一一张），赌同花而不是堆数值
+		-- 赵高：指鹿为马——主动改花色（点赵高 → 点手牌 → 选花色），每回合一次
+		-- 经济改成「打出的牌型含同花就给钱」，与改花色解耦：改牌是为了凑同花，但钱按出牌结算
 		SMODS.Joker({
 			key = "zhaogao",
-			config = { extra = { dollars = 3, need = 5 } },
+			config = { extra = { dollars = 3, used_round = 0 } },
 			rarity = 2,
 			cost = 6,
 			atlas = "hist_jokers",
@@ -1135,66 +1135,14 @@ return {
 			perishable_compat = true,
 			order = 37,
 			loc_vars = function(self, info_queue, center)
-				return { vars = { center.ability.extra.need, center.ability.extra.dollars } }
+				return { vars = { center.ability.extra.dollars } }
 			end,
 			calculate = function(self, card, context)
-				if context.first_hand_drawn and not context.blueprint
-					and G.GAME and G.GAME.blind
-				then
-					local hand = G.hand and G.hand.cards or {}
-					if #hand == 0 then
-						return
-					end
-					local function count_suits()
-						local t = {}
-						for _, c in ipairs(hand) do
-							local s = c.base and c.base.suit
-							if s then
-								t[s] = (t[s] or 0) + 1
-							end
-						end
-						return t
-					end
-					local before = count_suits()
-					local seed = "hist_zhaogao_" .. tostring(G.GAME.round or 0)
-						.. "_" .. tostring(G.GAME.hist_hand_played or 0)
-					local target = pseudorandom_element(hand, pseudoseed(seed))
-					if not (target and target.base) then
-						return
-					end
-					local old = target.base.suit
-					local pool = {}
-					for _, s in ipairs({ "Spades", "Hearts", "Clubs", "Diamonds" }) do
-						if s ~= old then
-							pool[#pool + 1] = s
-						end
-					end
-					local new = pseudorandom_element(pool, pseudoseed(seed .. "_suit"))
-					if not new then
-						return
-					end
-					target:change_suit(new)
-					local after = count_suits()
-					local formed = false
-					for suit, n in pairs(after) do
-						if n >= card.ability.extra.need
-							and (before[suit] or 0) < card.ability.extra.need
-						then
-							formed = true
-							break
-						end
-					end
-					card_eval_status_text(target, "extra", nil, nil, nil, {
-						message = localize("hist_zhaogao_msg"),
-						colour = (G.C.SUITS and G.C.SUITS[new]) or G.C.GOLD,
-					})
-					if formed then
-						-- first_hand_drawn 不是算分上下文，返回 { dollars = n } 不会被结算，直接加钱
-						ease_dollars(card.ability.extra.dollars)
-						card_eval_status_text(card, "extra", nil, nil, nil, {
-							message = localize("hist_zhaogao_pay") .. card.ability.extra.dollars,
-							colour = G.C.MONEY,
-						})
+				-- 同花给钱：同花顺也带 Flush 键，next() 判空即可，一手只给一次
+				if context.joker_main and not context.blueprint then
+					local ph = context.poker_hands or {}
+					if next(ph["Flush"] or {}) or next(ph["Straight Flush"] or {}) then
+						return { dollars = card.ability.extra.dollars, card = card }
 					end
 				end
 			end,

@@ -645,6 +645,87 @@ function Card:sell_card()
 	return sell_card_ref(self)
 end
 
+-- ============ 赵高·指鹿为马：点击改花色 ============
+-- 交互：点赵高进入改花色模式 → 点一张手牌 → 弹 overlay 选四种花色之一 → 改完退出
+-- 频率：每个盲注（G.GAME.round）一次，记录在卡片的 ability.extra.used_round 上，
+--       随存档保存，重开游戏也不会白嫖第二次。
+HIST.zhaogao_round_key = function()
+	if not G.GAME then
+		return 0
+	end
+	local ante = (G.GAME.round_resets and G.GAME.round_resets.ante) or 0
+	return ante * 100 + (G.GAME.round or 0)
+end
+
+HIST.zhaogao_used = function(card)
+	return card and card.ability and card.ability.extra
+		and card.ability.extra.used_round == HIST.zhaogao_round_key()
+end
+
+-- 真正改花色：就地换掉，永久生效（原版 Card:change_suit 会同步重算牌面）
+HIST.zhaogao_apply = function(joker, target, suit)
+	HIST.zhaogao_pick_joker = nil
+	HIST.zhaogao_pick_target = nil
+	if not (joker and joker.ability and joker.ability.extra and target and target.base) then
+		return
+	end
+	if target.base.suit == suit then
+		return
+	end
+	target:change_suit(suit)
+	joker.ability.extra.used_round = HIST.zhaogao_round_key()
+	card_eval_status_text(target, "extra", nil, nil, nil, {
+		message = localize("hist_zhaogao_msg"),
+		colour = (G.C.SUITS and G.C.SUITS[suit]) or G.C.GOLD,
+	})
+end
+
+-- 花色选择面板：四颗按钮，底色即花色色，一眼能认
+HIST.open_zhaogao_menu = function(joker, target)
+	HIST.zhaogao_pick_joker = joker
+	HIST.zhaogao_pick_target = target
+	local function suit_button(suit, key)
+		return UIBox_button({
+			label = { localize("hist_suit_" .. key) },
+			button = "hist_zhaogao_" .. key,
+			colour = (G.C.SUITS and G.C.SUITS[suit]) or G.C.GOLD,
+			minw = 3,
+		})
+	end
+	G.FUNCS.overlay_menu({
+		definition = create_UIBox_generic_options({
+			contents = {
+				{ n = G.UIT.R, config = { align = "cm", padding = 0.08 }, nodes = {
+					{ n = G.UIT.T, config = {
+						text = localize("hist_zhaogao_pick"),
+						scale = 0.45,
+						colour = G.C.UI.TEXT_LIGHT,
+					} },
+				} },
+				{ n = G.UIT.R, config = { align = "cm", padding = 0.05 }, nodes = {
+					suit_button("Spades", "spades"),
+					suit_button("Hearts", "hearts"),
+				} },
+				{ n = G.UIT.R, config = { align = "cm", padding = 0.05 }, nodes = {
+					suit_button("Clubs", "clubs"),
+					suit_button("Diamonds", "diamonds"),
+				} },
+			},
+		}),
+	})
+end
+
+-- 四个按钮各自一个具名函数（不用循环闭包，避开 Lua 5.1 的捕获坑）
+HIST.zhaogao_choose = function(suit)
+	local joker, target = HIST.zhaogao_pick_joker, HIST.zhaogao_pick_target
+	G.FUNCS.exit_overlay_menu()
+	HIST.zhaogao_apply(joker, target, suit)
+end
+G.FUNCS.hist_zhaogao_spades = function() HIST.zhaogao_choose("Spades") end
+G.FUNCS.hist_zhaogao_hearts = function() HIST.zhaogao_choose("Hearts") end
+G.FUNCS.hist_zhaogao_clubs = function() HIST.zhaogao_choose("Clubs") end
+G.FUNCS.hist_zhaogao_diamonds = function() HIST.zhaogao_choose("Diamonds") end
+
 -- ★ 点击交互：点皇帝进入吞并模式 → 再点任意小丑完成吞并；再点皇帝取消。
 --   （Cryptid items/pointer.lua Card:click 包装同款先例）
 local card_click_ref = Card.click
@@ -675,6 +756,46 @@ function Card:click()
 			})
 		end
 		return
+	end
+	-- 赵高：点他进入改花色模式，再点一张手牌 → 弹花色选择（每个盲注一次）
+	if self.area == G.jokers and self.config and self.config.center
+		and self.config.center.key == "j_hist_zhaogao"
+	then
+		if HIST.zhaogao_mode == self then
+			HIST.zhaogao_mode = nil
+		elseif HIST.zhaogao_used(self) then
+			card_eval_status_text(self, "extra", nil, nil, nil, {
+				message = localize("hist_zhaogao_used"),
+				colour = G.C.RED,
+			})
+		elseif G.STATE ~= G.STATES.SELECTING_HAND then
+			card_eval_status_text(self, "extra", nil, nil, nil, {
+				message = localize("hist_zhaogao_nowhere"),
+				colour = G.C.RED,
+			})
+		else
+			HIST.zhaogao_mode = self
+			card_eval_status_text(self, "extra", nil, nil, nil, {
+				message = localize("hist_zhaogao_prompt"),
+				colour = G.C.GOLD,
+			})
+		end
+		return
+	end
+	-- 赵高模式下手牌点击：不再走原版选中，直接开面板
+	if HIST.zhaogao_mode and self.area == G.hand then
+		local joker = HIST.zhaogao_mode
+		HIST.zhaogao_mode = nil
+		if joker.area == G.jokers and not HIST.zhaogao_used(joker)
+			and G.STATE == G.STATES.SELECTING_HAND
+		then
+			HIST.open_zhaogao_menu(joker, self)
+		end
+		return
+	end
+	-- 模式开着却点了别的卡（换盲注、逛商店、点错）→ 自动取消，避免下次误触
+	if HIST.zhaogao_mode and self ~= HIST.zhaogao_mode then
+		HIST.zhaogao_mode = nil
 	end
 	-- 叶卡捷琳娜：政变——点击她进入抢壳模式，再点击别人的壳夺走（设计案 §六.4）
 	if self.config and self.config.center

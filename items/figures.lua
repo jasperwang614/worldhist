@@ -1120,5 +1120,114 @@ return {
 				end
 			end,
 		}),
+
+		-- 赵高：指鹿为马——回合开始时随机把一张手牌的花色改成另一种
+		-- 新维度：花色改写（全 mod 唯一一张），赌同花而不是堆数值
+		SMODS.Joker({
+			key = "zhaogao",
+			config = { extra = { dollars = 3, need = 5 } },
+			rarity = 2,
+			cost = 6,
+			atlas = "hist_jokers",
+			pos = { x = 9, y = 4 },
+			blueprint_compat = false,
+			eternal_compat = true,
+			perishable_compat = true,
+			order = 37,
+			loc_vars = function(self, info_queue, center)
+				return { vars = { center.ability.extra.need, center.ability.extra.dollars } }
+			end,
+			calculate = function(self, card, context)
+				if context.first_hand_drawn and not context.blueprint
+					and G.GAME and G.GAME.blind
+				then
+					local hand = G.hand and G.hand.cards or {}
+					if #hand == 0 then
+						return
+					end
+					local function count_suits()
+						local t = {}
+						for _, c in ipairs(hand) do
+							local s = c.base and c.base.suit
+							if s then
+								t[s] = (t[s] or 0) + 1
+							end
+						end
+						return t
+					end
+					local before = count_suits()
+					local seed = "hist_zhaogao_" .. tostring(G.GAME.round or 0)
+						.. "_" .. tostring(G.GAME.hist_hand_played or 0)
+					local target = pseudorandom_element(hand, pseudoseed(seed))
+					if not (target and target.base) then
+						return
+					end
+					local old = target.base.suit
+					local pool = {}
+					for _, s in ipairs({ "Spades", "Hearts", "Clubs", "Diamonds" }) do
+						if s ~= old then
+							pool[#pool + 1] = s
+						end
+					end
+					local new = pseudorandom_element(pool, pseudoseed(seed .. "_suit"))
+					if not new then
+						return
+					end
+					target:change_suit(new)
+					local after = count_suits()
+					local formed = false
+					for suit, n in pairs(after) do
+						if n >= card.ability.extra.need
+							and (before[suit] or 0) < card.ability.extra.need
+						then
+							formed = true
+							break
+						end
+					end
+					card_eval_status_text(target, "extra", nil, nil, nil, {
+						message = localize("hist_zhaogao_msg"),
+						colour = (G.C.SUITS and G.C.SUITS[new]) or G.C.GOLD,
+					})
+					if formed then
+						-- first_hand_drawn 不是算分上下文，返回 { dollars = n } 不会被结算，直接加钱
+						ease_dollars(card.ability.extra.dollars)
+						card_eval_status_text(card, "extra", nil, nil, nil, {
+							message = localize("hist_zhaogao_pay") .. card.ability.extra.dollars,
+							colour = G.C.MONEY,
+						})
+					end
+				end
+			end,
+		}),
+
+		-- 范蠡：功成身退，三致千金——卖卡既能套现，也能换成下一手的本钱
+		-- 两条收益：出售即得售价 50% 的额外现金（商店里也生效）；
+		--           若在盲注内出售，再加售价 ×20 的筹码压进下一手（战斗中卖卡才有爆发）
+		-- 与庇护（壳不可售）天然冲突，逼玩家在「留着代发」和「套现」之间选
+		SMODS.Joker({
+			key = "fanli",
+			config = { extra = { per = 20, cash_rate = 0.5 } },
+			rarity = 3,
+			cost = 8,
+			atlas = "hist_jokers",
+			pos = { x = 0, y = 5 },
+			blueprint_compat = false,
+			eternal_compat = true,
+			perishable_compat = true,
+			order = 38,
+			loc_vars = function(self, info_queue, center)
+				local pending = (G.GAME and G.GAME.hist_fanli_pending) or 0
+				return { vars = { center.ability.extra.per, pending, math.floor(center.ability.extra.cash_rate * 100) } }
+			end,
+			calculate = function(self, card, context)
+				if context.joker_main and not context.blueprint then
+					local pending = (G.GAME and G.GAME.hist_fanli_pending) or 0
+					if pending > 0 then
+						G.GAME.hist_fanli_pending = 0
+						return { chips = pending, card = card }
+					end
+				end
+			end,
+		}),
 	},
 }

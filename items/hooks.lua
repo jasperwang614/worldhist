@@ -409,6 +409,15 @@ function HIST.steal_shell(new_emperor, shell)
 	return true
 end
 
+-- 是否真的在盲注里打牌（SELECTING_HAND / HAND_PLAYED / DRAW_TO_HAND）。
+-- 别用 G.GAME.blind 判：击败 Boss 后它仍指向那个盲注，直到下一个盲注开始。
+function HIST.in_blind_state()
+	local st = G.STATE
+	return st == G.STATES.SELECTING_HAND
+		or st == G.STATES.HAND_PLAYED
+		or st == G.STATES.DRAW_TO_HAND
+end
+
 -- 某人名下是否还有壳（叶卡捷琳娜抢来的壳不属于 emperor_keys，不能靠 is_emperor 判定）
 function HIST.has_shells(owner)
 	if not G.jokers then
@@ -612,6 +621,26 @@ function Card:sell_card()
 	-- 所以判定用「名下有壳」而不是 is_emperor（否则那些 +1 永远收不回来）
 	if HIST.is_emperor(self) or HIST.has_shells(self) then
 		HIST.unswallow_all(self)
+	end
+	-- 范蠡：出售小丑 → 立即额外获得售价 × cash_rate 的现金（商店里也算）；
+	-- 若这一卖发生在盲注内，再把售价 × per 压进下一手筹码（战斗中卖卡才有爆发）。
+	-- 壳受庇护不能出售，所以永远吃不到被吞的卡——「留着代发」和「套现」互斥。
+	if G.GAME and G.jokers and self.ability and self.ability.set == "Joker" then
+		local in_blind = HIST.in_blind_state()
+		for _, c in ipairs(G.jokers.cards) do
+			if c ~= self and c.config and c.config.center
+				and c.config.center.key == "j_hist_fanli"
+				and c.ability and c.ability.extra
+			then
+				local price = self.sell_cost or 0
+				local cash = math.max(1, math.floor(price * c.ability.extra.cash_rate))
+				ease_dollars(cash)
+				if in_blind then
+					G.GAME.hist_fanli_pending = (G.GAME.hist_fanli_pending or 0)
+						+ math.floor(price * c.ability.extra.per)
+				end
+			end
+		end
 	end
 	return sell_card_ref(self)
 end

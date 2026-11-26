@@ -6,7 +6,7 @@ A history-themed Balatro content mod: emperors, relics, institutions and revolut
 
 ![preview](docs/preview.png)
 
-**v0.3.5**: 49 jokers + 26 consumables + 18 vouchers + 6 Boss blinds + 2 tags + 20 opening omens, fully localized in Chinese and English. **Art is 94 / 101** — every joker, consumable, voucher, sticker and tag now uses a custom atlas; only the 6 Boss blinds are still placeholder frames.
+**v0.4.0**: 51 jokers + 26 consumables + 18 vouchers + 6 Boss blinds + 2 tags + 20 opening omens, fully localized in Chinese and English. **Art is 96 / 103** — every joker, consumable, voucher, sticker and tag now uses a custom atlas; only the 6 Boss blinds are still placeholder frames.
 
 Three interlocking systems — **coronation**, **annexation** and **revolution** — carry five figures from Ying Zheng to Louis XVI.
 
@@ -86,10 +86,10 @@ Suit locks hook into the return value of `get_poker_hand_info` — preview and s
 
 ## Status and Known Issues
 
-- **All 101 items are implemented and pass static checks**: syntax 12/12 files, 102 localization keys per language with zero missing and zero orphans, 26/26 hooked vanilla functions present.
+- **All 103 items are implemented and pass static checks**: syntax 12/12 files, localization keys per language with zero missing and zero orphans, 26/26 hooked vanilla functions present.
 - **Test coverage is low**: only the omen system has been verified end-to-end (opening pick → Dynastic Change → rotation to Iron Age at ante 3). The remaining entries still need full-run testing.
-- **Art is 94 / 101**: six atlases are wired up; only the 6 Boss blinds still fall back to vanilla frames.
-  - `hist_jokers` 10×5 (49 cards: five form pairs + 36 historical figures + the Head of Louis XVI)
+- **Art is 96 / 103**: six atlases are wired up; only the 6 Boss blinds still fall back to vanilla frames.
+  - `hist_jokers` 10×6 (51 cards: five form pairs + 38 historical figures + the Head of Louis XVI)
   - `hist_relics` 10×3 (14 relics + 3 spectral + 9 planet cards)
   - `hist_vouchers` 10×2 (18 policies)
   - `hist_stickers` 10×2 (stickers, one Chinese row and one English row) and `hist_tags` (2 tags)
@@ -102,7 +102,7 @@ Up front, because it shouldn't take detective work: **the card art is AI-generat
 
 Where the line actually falls:
 
-- **Card art (94 of 101 assets)**: produced with a text-to-image model. I wrote the prompts — what the card depicts, the period feel, the composition, the palette — then selected, cropped to the atlas grid, colour-corrected and assembled the 1x / 2x sheets. The model produced the pixels; it did not decide what each card should be.
+- **Card art (96 of 103 assets)**: produced with a text-to-image model. I wrote the prompts — what the card depicts, the period feel, the composition, the palette — then selected, cropped to the atlas grid, colour-corrected and assembled the 1x / 2x sheets. The model produced the pixels; it did not decide what each card should be.
 - **Code**: written with AI assistance, designed and verified by me. The coronation, annexation and revolution systems, the omen rotation state machine and the suit-lock scoring hook were specified by me first, implemented with a model, then checked line by line against Balatro's decompiled source — that is how I found out `blind.in_blind` doesn't actually exist.
 - **Copy and localisation**: 200+ strings in Chinese and English. Themes, historical hooks and card names are mine; the wording was drafted with AI and edited by me.
 - **Numbers and balance**: every value, every counter and every omen trade-off was tuned over dozens of test runs.
@@ -115,7 +115,7 @@ I treat the art as **replaceable placeholder work**: the atlas layout, frame siz
 
 All six content lines are drawn; **only the 6 Boss blinds remain** — Reign of Terror (Robespierre), L'État c'est moi (Louis XIV), the Grand Canal (Sui Yangdi), Suppressing Criticism (King Li of Zhou), the Black Death, and Quipu (the Inca). They currently borrow vanilla Boss frames.
 
-**All 94 existing AI card images are treated as placeholders and are open for replacement, card by card** — that is the most useful help this mod can get right now. Same spec, drops straight in, and the artist gets credited in the README and the release notes.
+**All 96 existing AI card images are treated as placeholders and are open for replacement, card by card** — that is the most useful help this mod can get right now. Same spec, drops straight in, and the artist gets credited in the README and the release notes.
 
 - Style: Balatro card art — heavy black outlines, flat fills, high-saturation clashing colours, **no text on the art** (all copy lives in localization).
 - Size: 71×95 per frame (1x) / 142×190 (2x); transparent margins differ by type — jokers full-bleed, vouchers and consumables 4–6px on each side.

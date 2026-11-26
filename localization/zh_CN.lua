@@ -384,6 +384,23 @@ return {
 					"{C:inactive}他走过的路，后来都成了版图。{}",
 				},
 			},
+			j_hist_zhaogao = {
+				name = "赵高",
+				text = {
+					"{C:attention}回合开始时{}，随机改变手中一张牌的花色",
+					"若因此凑成 {C:attention}#1#{} 张同花，{C:money}+$#2#{}",
+					"{C:inactive}指鹿为马。{}",
+				},
+			},
+			j_hist_fanli = {
+				name = "范蠡",
+				text = {
+					"每当你{C:attention}出售{}一张小丑，额外获得其售价 {C:money}#3#%{} 的现金",
+					"若在{C:attention}盲注内{}出售，下一手额外获得其售价 {C:chips}×#1#{} 的筹码",
+					"（当前待结算 {C:chips}#2#{}）",
+					"{C:inactive}功成身退，三致千金。{}",
+				},
+			},
 		},
 		Tarot = {
 			c_hist_yuxi = {
@@ -835,6 +852,8 @@ return {
 			hist_dagger_boost = "匕首见血",
 			hist_eat_prompt = "点击要吞并的小丑（再点自己取消）",
 			hist_swallowed_msg = "已吞并",
+			hist_zhaogao_msg = "指鹿为马",
+			hist_zhaogao_pay = "同花 +$",
 			hist_fire_marked = "此仇已记下",
 			hist_fire_active = "宿敌已废",
 			hist_taichang_gift = "进贡登基器物",

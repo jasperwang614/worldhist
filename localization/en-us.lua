@@ -384,6 +384,24 @@ return {
 					"{C:inactive}Every road he walked became a border.{}",
 				},
 			},
+			j_hist_zhaogao = {
+				name = "Zhao Gao",
+				text = {
+					"At the start of each round, change the suit of",
+					"a random card in your hand. If this completes",
+					"a {C:attention}#1#{}-card flush, gain {C:money}$#2#{}",
+					"{C:inactive}Call a stag a horse.{}",
+				},
+			},
+			j_hist_fanli = {
+				name = "Fan Li",
+				text = {
+					"Whenever you {C:attention}sell{} a Joker, gain {C:money}#3#%{} of its sell value",
+					"If sold {C:attention}during a blind{}, your next hand also gains",
+					"{C:chips}Chips{} equal to {C:attention}#1#{}× its sell value (currently {C:chips}#2#{})",
+					"{C:inactive}Retire, and make three fortunes.{}",
+				},
+			},
 		},
 		Tarot = {
 			c_hist_yuxi = {
@@ -835,6 +853,8 @@ return {
 			hist_dagger_boost = "Blood on the blade",
 			hist_eat_prompt = "Click a joker to absorb (click self to cancel)",
 			hist_swallowed_msg = "Absorbed!",
+			hist_zhaogao_msg = "A stag, not a horse",
+			hist_zhaogao_pay = "Flush +$",
 			hist_fire_marked = "Vengeance marked",
 			hist_fire_active = "Nemesis disabled",
 			hist_taichang_gift = "Relic delivered",

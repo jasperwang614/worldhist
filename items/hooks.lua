@@ -931,19 +931,27 @@ function Blind:set_blind(blind, reset, silent)
 	-- 光荣革命：议会开会，最右那张本回合闭嘴
 	HIST.glorious_silence()
 	-- 黑死病：进场即从牌组带走 2 张（永久）
+	-- ★ 幂等：Blind:set_blind 在同一盲注内会被反复调用（每手结算、UI 刷新、读档重建），
+	--   没有 guard 就会每调一次扣 2 张，牌组被反复抽干（2026-11-27 实测踩到）。
+	--   key 用「ante + 盲注位」，同一场 Boss 只结算一次；写在 G.GAME 上，读档也不会重复扣。
 	if self.config and self.config.blind and self.config.blind.key == "bl_hist_plague" then
-		local killed = HIST.plague_kill(2)
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.5,
-			func = function()
-				card_eval_status_text(G.GAME.blind, "extra", nil, nil, nil, {
-					message = killed > 0 and localize("hist_plague_hit") or localize("hist_plague_spare"),
-					colour = G.C.RED,
-				})
-				return true
-			end,
-		}))
+		local plague_key = tostring((G.GAME.round_resets and G.GAME.round_resets.ante) or 0)
+			.. ":" .. tostring(G.GAME.blind_on_deck or "Boss")
+		if G.GAME.hist_plague_key ~= plague_key then
+			G.GAME.hist_plague_key = plague_key
+			local killed = HIST.plague_kill(2)
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.5,
+				func = function()
+					card_eval_status_text(G.GAME.blind, "extra", nil, nil, nil, {
+						message = killed > 0 and localize("hist_plague_hit") or localize("hist_plague_spare"),
+						colour = G.C.RED,
+					})
+					return true
+				end,
+			}))
+		end
 	end
 	-- 罗伯斯庇尔：皇帝在场则随机一张非皇帝小丑（含吞并壳以外的独立小丑）标记"嫌疑"
 	-- 嫌疑不走原版 debuff，靠结算门静默，避免和原版每手 debuff 重算打架
